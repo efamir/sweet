@@ -1,0 +1,5 @@
+// Тест на неочікуваний else
+let x: Int = 10;
+else {
+    let y: Int = 20;
+}

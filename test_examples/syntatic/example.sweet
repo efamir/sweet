@@ -1,0 +1,40 @@
+// БАЗОВИЙ ПРИКЛАД, що містить усі можливі токени
+// Кожен рядок точно відповідає граматиці мови SWEET.
+
+//  Оголошення 
+var status: Bool = false;
+let pi: Double = -3.14;
+let message: String = "Hello, SWEET!";
+
+//  Оголошення функції 
+func calculate(a: Int, b: Int) -> Int {
+    let result: Int = (a + b) * 10 - 2;
+    let power: Int = 2 ** 3;
+
+    //  Умовна логіка 
+    if result / 5 > 0 {
+        let check_not: Bool = !true;
+    }
+
+    return result;
+}
+
+//  Перевірка операторів відношення 
+let check_less: Bool = 5 < 10.;
+let check_geq: Bool = 20 >= 20;
+let check_leq: Bool = 10 <= 10;
+let check_eq: Bool = 30 == 30;
+let check_neq: Bool = 40 != .5;
+
+//  Цикл та введення-виведення 
+var counter: Int = 0;
+while counter < 2 {
+    write("Calling function...");
+    calculate(5, 3); // Виклик функції як інструкція
+
+    // Присвоєння значення вже існуючій змінній
+    counter = counter + 1;
+}
+
+// Перевірка інструкції read
+read(status);

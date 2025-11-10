@@ -1,1 +1,2 @@
 from . import lexical_analyzer
+from .syntatic_analyzer_result_print import get_lexemes_and_print_result

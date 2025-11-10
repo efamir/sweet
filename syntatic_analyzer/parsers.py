@@ -488,6 +488,7 @@ class ProgramParser(RuleParser):
         return self if self.context.peek() is not None else None
 
     def __call__(self):
+        print(f"\n{'Результати синтаксичного аналізу':-^42}\n")
         print("Program:")
 
         if not StatementListParser(self.context)():

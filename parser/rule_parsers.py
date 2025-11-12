@@ -4,6 +4,9 @@ from abc import ABC, abstractmethod
 from lexical_analyzer.custom_types import Lexeme
 from typing import NamedTuple
 from contextlib import contextmanager
+from enum import Enum
+from dataclasses import dataclass, field
+from .type_system import ValType
 
 
 class TokenLexemeOption(NamedTuple):
@@ -14,12 +17,79 @@ class TokenLexemeOption(NamedTuple):
         return f"(token: {self.token}, lexeme: {self.lexeme if self.lexeme else 'any'})"
 
 
+class IndKind(Enum):
+    var = 1
+    let = 2
+    func = 3
+
+
+@dataclass
+class Symbol:
+    name: str
+    type: ValType
+    kind: IndKind
+    params: list[ValType] | None = None
+    initialized: bool = False
+
+
+@dataclass
+class Scope:
+    name: str
+    symbols: list[Symbol] = field(default_factory=list)
+    name_symbol_map: dict[str, Symbol] = field(default_factory=dict)
+
+
+class SymbolTable:
+    def __init__(self):
+        self.__scopes: list[Scope] = [Scope("main")]
+        self.__scope_name_scope_map: dict[str, Scope] = {}
+        self.__current_scope: Scope = self.__scopes[-1]
+
+    def add(self, symbol: Symbol) -> bool:
+        if symbol.name in self.__current_scope.name_symbol_map:
+            return False
+        self.__current_scope.name_symbol_map[symbol.name] = symbol
+        self.__current_scope.symbols.append(symbol)
+        return True
+
+    @contextmanager
+    def new_scope(self, name: str):
+        assert self.lookup(name) is not None
+        try:
+            new_scope = Scope(name)
+            self.__scope_name_scope_map[name] = new_scope
+            self.__scopes.append(new_scope)
+            self.__current_scope = new_scope
+            yield None
+        finally:
+            self.__scopes.pop()
+            self.__current_scope = self.__scopes[-1]
+
+    def lookup(self, name: str) -> Symbol | None:
+        for scope in self.__scopes[::-1]:
+            search_res = scope.name_symbol_map.get(name)
+            if search_res:
+                return search_res
+
+    def set_initialized(self, name: str):
+        symbol = self.lookup(name)
+        if not symbol:
+            return
+        symbol.initialized = True
+
+    @property
+    def current_scope_name(self) -> str:
+        return self.__current_scope.name
+
+
 class ParserContext:
     def __init__(self, lexemes: list[Lexeme]):
         self._lexemes = lexemes
         self._lexemes_len = len(lexemes)
         self._ind = 0
         self._indent = 0
+        self.return_value = None
+        self.symbol_table = SymbolTable()
 
     def peek(self, offset=0) -> Lexeme | None:
         if self._ind + offset >= self.lexemes_len:
@@ -32,8 +102,9 @@ class ParserContext:
         return token
 
     @contextmanager
-    def next_indent(self):
+    def call(self):
         try:
+            self.return_value = None
             self._indent += 2
             yield None
         finally:

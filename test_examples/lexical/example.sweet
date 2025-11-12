@@ -11,7 +11,7 @@ func calculate(a: Int, b: Int) -> Int {
     let result: Int = (a + b) * 10 - 2;
     let power: Int = 2 ** 3;
 
-    //  Умовна логіка 
+    //  Умовна логіка
     if result / 5 > 0 {
         let check_not: Bool = !true;
     }

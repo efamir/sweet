@@ -1,0 +1,51 @@
+// Програма для демонстрації можливостей мови SWEET
+
+// Глобальні константи та змінні
+let PI: Double = 3.14 * 1 + 0;
+let GREETING: String = "Processing value: ";
+var error_flag: Bool = false;
+
+// Функція перевіряє, чи знаходиться число у заданому діапазоні.
+// Ппараметри, локальні змінні та інструкція return.
+func is_in_range(val: Int, min: Int, max: Int) -> Bool {
+    let check_min: Bool = val >= min;
+    let check_max: Bool = val <= max;
+
+    // Вкладені 'if'
+    if check_min {
+        if check_max {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+var counter: Int = 0;
+while counter < 5 {
+    let current_value: Int = counter ** 2; // Перевірка оператора **
+
+    write(GREETING);
+    write(current_value);
+
+    let is_valid: Bool = is_in_range(current_value, 0, 20);
+
+    if is_valid == true {
+        write("Value is valid.");
+    } else {
+        error_flag = true;
+        write("Error: value is out of range!");
+    }
+
+    // Присвоєння значення вже існуючій змінній
+    counter = counter + 1;
+}
+
+// Демонстрація операторів
+let test_expr: Double = (100.0 + 50.0) / 2.0 - 5.0 * 2.0;
+let eq_check: Bool = test_expr == 65.0;
+let neq_check: Bool = !eq_check;
+
+// Перевірка інструкції read
+write("Reading final status...");
+read(error_flag);

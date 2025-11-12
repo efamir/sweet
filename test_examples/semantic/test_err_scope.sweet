@@ -1,0 +1,5 @@
+// Помилка: Змінна 'local' не видна за межами функції
+func my_func() {
+    let local: Int = 10;
+}
+let value: Int = local;

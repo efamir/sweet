@@ -1,0 +1,2 @@
+// Помилка: Неможливо додати Int до String
+let result: Int = 10 + "hello";

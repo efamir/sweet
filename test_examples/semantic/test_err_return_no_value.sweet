@@ -1,0 +1,4 @@
+// Помилка: Функція 'err_func' повинна повертати значення Int
+func err_func(a: Int) -> Int {
+    return;
+}

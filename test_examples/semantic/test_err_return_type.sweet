@@ -1,0 +1,4 @@
+// Помилка: Функція 'err_func' повинна повертати Int, а не Bool
+func err_func(a: Int) -> Int {
+    return a > 0;
+}

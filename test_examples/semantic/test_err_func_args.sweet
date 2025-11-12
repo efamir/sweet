@@ -1,0 +1,5 @@
+// Помилка: Неправильний тип другого аргументу при виклику 'add'
+func add(a: Int, b: Int) -> Int {
+    return a + b;
+}
+let result: Int = add(5, "hello");

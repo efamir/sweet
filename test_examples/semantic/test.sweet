@@ -1,12 +1,10 @@
-// Програма для демонстрації можливостей мови SWEET
-
 // Глобальні константи та змінні
 let PI: Double = 3.14 * 1 + 0;
 let GREETING: String = "Processing value: ";
 var error_flag: Bool = false;
 
 // Функція перевіряє, чи знаходиться число у заданому діапазоні.
-// Ппараметри, локальні змінні та інструкція return.
+// Параметри, локальні змінні та інструкція return.
 func is_in_range(val: Int, min: Int, max: Int) -> Bool {
     let check_min: Bool = val >= min;
     let check_max: Bool = val <= max;

@@ -742,5 +742,5 @@ class ProgramParser(RuleParser):
             )
             return False
 
-        print("Parser: Синтаксичний аналіз завершився успішно.")
+        print("Parser: Синтаксичний та семантичний аналіз завершився успішно.")
         return True

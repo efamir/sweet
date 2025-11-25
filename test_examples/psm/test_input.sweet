@@ -1,0 +1,39 @@
+// ТЕСТ ВВЕДЕННЯ ДАНИХ
+
+// 1. Тест рядків
+var user_name: String = "";
+write("Введіть ваше ім'я:");
+read(user_name);
+
+write("Привіт, " + user_name);
+
+// 2. Тест цілих чисел
+var age: Int = 0;
+write("Введіть ваш вік (ціле число):");
+read(age);
+
+let next_year: Int = age + 1;
+write("Наступного року вам буде:");
+write(next_year);
+
+// 3. Тест дійсних чисел
+var price: Double = 0.0;
+write("Введіть ціну товару (дробове число, напр. 10.5):");
+read(price);
+
+let tax: Double = price * 0.2;
+let total: Double = price + tax;
+
+write("Податок (20%):");
+write(tax);
+write("Загальна сума:");
+write(total);
+
+// 4. Тест логіки з введеними даними
+if age >= 18 {
+    write("Доступ дозволено (дорослий).");
+} else {
+    write("Доступ заборонено (дитина).");
+}
+
+write("Тест завершено.");

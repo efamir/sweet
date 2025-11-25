@@ -1,0 +1,23 @@
+// ТЕСТ ГЛОБАЛЬНОЇ ОБЛАСТІ ВИДИМОСТІ
+
+var global_counter: Int = 10;
+
+func increment_global(val: Int) {
+    write("Inside function. Adding:");
+    write(val);
+    global_counter = global_counter + val;
+}
+
+write("Before:");
+write(global_counter); // Має бути 10
+
+increment_global(5);
+
+write("After:");
+write(global_counter); // Має бути 15
+
+if global_counter == 15 {
+    write("SUCCESS: Global variable modified correctly.");
+} else {
+    write("FAILURE: Global variable did not change.");
+}

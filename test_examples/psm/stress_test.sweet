@@ -1,0 +1,63 @@
+// СТРЕС-ТЕСТ КОМПІЛЯТОРА SWEET
+
+// Тест затінення
+var shadow_var: Int = 999;
+var output_log: String = "Result: ";
+
+func fibonacci(n: Int) -> Int {
+    if n <= 1 {
+        return n;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+// Тестування затінення
+func test_scope(shadow_var: Int, modifier: Double) -> Double {
+    // Тут shadow_var не має бути 999
+    let local_calc: Double = shadow_var + modifier;
+    return local_calc;
+}
+
+// Пріоритети та степінь
+func complex_math(base: Int) -> Int {
+    // 2 + (base ^ 3) / 2
+    // (Int ** Int)
+    let res: Int = 2 + base ** 3 / 2;
+    return res;
+}
+
+write("Test Start");
+
+// ТЕСТ 1: Рекурсія
+let fib_num: Int = 7;
+let fib_res: Int = fibonacci(fib_num);
+// fib(7) має бути 13
+write("Fibonacci(7) [Expect 13]:");
+write(fib_res);
+
+// ТЕСТ 2: Області видимості
+// Передаємо 10. Якщо візьме глобальну (999) - це помилка.
+let scope_res: Double = test_scope(10, 5.5);
+// 10 + 5.5 = 15.5
+write("Scope Test [Expect 15.5]:");
+write(scope_res);
+
+write("Global Var [Expect 999]:");
+write(shadow_var); // Має залишитись 999
+
+// ТЕСТ 3: Арифметика та степінь
+// 2 + (4 ** 3) / 2  => 2 + 64 / 2 => 2 + 32 => 34
+let math_res: Int = complex_math(4);
+write("Math Test (2 + 4**3 / 2) [Expect 34]:");
+write(math_res);
+
+// ТЕСТ 4: Цикл та рядки
+var i: Int = 0;
+while i < 3 {
+    output_log = output_log + "!";
+    i = i + 1;
+}
+write("String Loop [Expect 'Result: !!!']:");
+write(output_log);
+
+write("End Stress Test");

@@ -1,13 +1,14 @@
 # rule_parsers.py
 
 from abc import ABC, abstractmethod
-from lexical_analyzer.custom_types import Lexeme
-from typing import NamedTuple
 from contextlib import contextmanager
-from enum import Enum
 from dataclasses import dataclass, field
-from .type_system import ValType
+from enum import Enum
+from typing import NamedTuple
 
+from lexical_analyzer.custom_types import Lexeme
+from .type_system import ValType
+from postfix_generator import PostfixCodeGenerator
 
 class TokenLexemeOption(NamedTuple):
     token: str
@@ -65,6 +66,12 @@ class SymbolTable:
             self.__scopes.pop()
             self.__current_scope = self.__scopes[-1]
 
+    def is_global(self, name: str) -> bool:
+        if len(self.__scopes) == 1:
+            return False
+
+        return (name in self.__scopes[0].name_symbol_map) and (len(self.__scopes) > 1)
+
     def lookup(self, name: str) -> Symbol | None:
         for scope in self.__scopes[::-1]:
             search_res = scope.name_symbol_map.get(name)
@@ -83,13 +90,15 @@ class SymbolTable:
 
 
 class ParserContext:
-    def __init__(self, lexemes: list[Lexeme]):
+    def __init__(self, lexemes: list[Lexeme], generator: PostfixCodeGenerator):
         self._lexemes = lexemes
         self._lexemes_len = len(lexemes)
         self._ind = 0
         self._indent = 0
         self.return_value = None
         self.symbol_table = SymbolTable()
+        self.generator = generator
+        self.functions_to_save = []
 
     def peek(self, offset=0) -> Lexeme | None:
         if self._ind + offset >= self.lexemes_len:
@@ -124,8 +133,8 @@ class ParserContext:
 
 
 class RuleParser(ABC):
-    def __init__(self, context: ParserContext | list[Lexeme]):
-        self.context = context if isinstance(context, ParserContext) else ParserContext(context)
+    def __init__(self, context: ParserContext | tuple[list[Lexeme], PostfixCodeGenerator]):
+        self.context = context if isinstance(context, ParserContext) else ParserContext(context[0], context[1])
 
     def parse_token(self, token: str, lexeme: str | None = None, check=False):
         lex = self.context.consume() if not check else self.context.peek()

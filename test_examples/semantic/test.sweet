@@ -45,7 +45,3 @@ write("HERE: ");
 write(test_expr);
 let eq_check: Bool = test_expr == 65.0;
 let neq_check: Bool = !eq_check;
-
-// Перевірка інструкції read
-write("Reading final status...");
-read(error_flag);

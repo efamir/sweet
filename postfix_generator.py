@@ -142,32 +142,53 @@ class PostfixCodeGenerator:
 
     # --- Фінальне збереження ---
     def save_to_file(self, filename: str):
+        calculated_labels = {}
+        for i, line in enumerate(self.code):
+            parts = line.split('\t')
+
+            if len(parts) == 2:
+                lexeme, token = parts
+                if token == 'label':
+                    if i + 1 < len(self.code):
+                        next_line = self.code[i + 1]
+                        next_parts = next_line.split('\t')
+                        if len(next_parts) == 2 and next_parts[1] == 'colon':
+                            calculated_labels[lexeme] = i
+
+        # 2. Запис у файл
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(".target: Postfix Machine\n")
             f.write(".version: 0.3\n\n")
 
-            # Змінні
+            # Секція змінних
             if self.variables:
                 f.write(".vars(\n")
                 for var in self.variables:
                     f.write(f"\t{var}\n")
                 f.write(")\n\n")
 
-            # Глобальні змінні
+            # Секція міток (Тепер заповнюється автоматично!)
+            if calculated_labels:
+                f.write(".labels(\n")
+                for label, index in calculated_labels.items():
+                    f.write(f"\t{label}\t{index}\n")
+                f.write(")\n\n")
+
+            # Секція глобальних змінних (для функцій)
             if self.used_globals:
                 f.write(".globVarList(\n")
                 for var_name in self.used_globals:
                     f.write(f"\t{var_name}\n")
                 f.write(")\n\n")
 
-            # Функції
+            # Секція функцій
             if self.funcs:
                 f.write(".funcs(\n")
                 for func in self.funcs:
                     f.write(f"\t{func}\n")
                 f.write(")\n\n")
 
-            # Код
+            # Секція коду
             f.write(".code(\n")
             for line in self.code:
                 f.write(f"\t{line}\n")

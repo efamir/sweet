@@ -4,6 +4,8 @@
 var shadow_var: Int = 999;
 var output_log: String = "Result: ";
 
+write(2 ** 2 ** 3);
+
 func fibonacci(n: Int) -> Int {
     if n <= 1 {
         return n;
